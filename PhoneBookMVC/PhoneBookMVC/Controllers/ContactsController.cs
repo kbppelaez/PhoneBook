@@ -23,7 +23,7 @@ namespace PhoneBookMVC.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Contact != null ? 
-                          View(await _context.Contact.ToListAsync()) :
+                          View(await _context.Contact.OrderBy(c => c.FirstName).ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Contact'  is null.");
         }
 
@@ -113,7 +113,7 @@ namespace PhoneBookMVC.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = contact.Id });
             }
             return View(contact);
         }
