@@ -43,7 +43,7 @@
                 @Html.DisplayFor(model => model.PhoneNumber)
             </dd>
         }
-        @if (Model.PhoneNumber != "" && Model.PhoneNumber != null)
+        @if (Model.Notes != "" && Model.Notes != null)
         {
             <dt>
                 @Html.DisplayNameFor(model => model.Notes)
@@ -55,8 +55,12 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id"><input type="button" value="Edit" class="btn btn-primary" /></a>
-    <a asp-action="Delete" asp-route-id="@Model?.Id"><input type="button" value="Delete" class="btn btn-danger" /></a>
-    <a asp-action="Index"><input type="button" value="Back" class="btn btn-secondary" /></a>
-    <!--<input type="button" value="Back" class="btn btn-secondary" onclick="javascript:window.history.go(-1)" />-->
+    <form asp-action="Delete">
+        <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Id">Edit</a>
+
+        <input type="hidden" asp-for="Id" />
+        <button class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
 </div>
