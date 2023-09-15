@@ -20,11 +20,67 @@ namespace PhoneBookMVC.Controllers
         }
 
         // GET: Contacts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search)
         {
-              return _context.Contact != null ? 
-                          View(await _context.Contact.OrderBy(c => c.FirstName).ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Contact'  is null.");
+            if(_context.Contact == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Contact'  is null.");
+            }
+            else
+            {
+                var contacts = from c in _context.Contact
+                               select c;
+
+                if (!string.IsNullOrEmpty(search))
+                {
+                    ViewData["searchstring"] = search;
+                    contacts = contacts.Where(c => c.FirstName.Contains(search)
+                                            || (c.LastName != null && c.LastName.Contains(search))
+                                            || (c.Email != null && c.Email.Contains(search))
+                                            || (c.PhoneNumber != null && c.PhoneNumber.Contains(search))
+                                            || (c.Notes != null && c.Notes.Contains(search))
+                    );
+                }
+                else
+                {
+                    _ = ViewData.Remove("searchstring");
+                }
+
+                contacts = contacts.OrderBy(c => c.FirstName);
+                return View(await contacts.ToListAsync());
+            }
+        }
+
+        // GET: Contacts/Search/string
+        public async Task<IActionResult> Search(string? search)
+        {
+            if (_context.Contact == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Contact'  is null.");
+            }
+            else
+            {
+                var contacts = from c in _context.Contact
+                               select c;
+
+                if (!string.IsNullOrEmpty(search))
+                {
+                    ViewData["searchstring"] = search;
+                    contacts = contacts.Where(c => c.FirstName.Contains(search)
+                                            || (c.LastName != null && c.LastName.Contains(search))
+                                            || (c.Email != null && c.Email.Contains(search))
+                                            || (c.PhoneNumber != null && c.PhoneNumber.Contains(search))
+                                            || (c.Notes != null && c.Notes.Contains(search))
+                    );
+                }
+                else
+                {
+                    _ = ViewData.Remove("searchstring");
+                }
+
+                contacts = contacts.OrderBy(c => c.FirstName);
+                return View(await contacts.ToListAsync());
+            }
         }
 
         // GET: Contacts/Details/5
