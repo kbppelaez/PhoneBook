@@ -1,12 +1,10 @@
 ﻿@model PhoneBookMVC.Models.Contact
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "New Contact";
 }
-
-<h1>Create</h1>
-
-<h4>Contact</h4>
+<h4>Add New Contact Details</h4>
+<span>Fields with an asterisk (*) are required.</span>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -37,15 +35,13 @@
                 <input asp-for="Notes" class="form-control" />
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="button" value="Back" class="btn btn-secondary" onclick="javascript:window.history.go(-1)" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
