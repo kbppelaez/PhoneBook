@@ -396,3 +396,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+########################################################
+# user-modified; not part of vs .gitignore template
+#########################
+# ignore any files in /bin and /ojb Folders
+***/bin/*
+***/obj/*
