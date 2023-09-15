@@ -8,7 +8,7 @@ namespace PhoneBookMVC.Models
 
         [Required]
         [StringLength(50, MinimumLength = 1)]
-        [Display(Name = "First Name (*)")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; } = string.Empty;
 
         [StringLength(50)]
