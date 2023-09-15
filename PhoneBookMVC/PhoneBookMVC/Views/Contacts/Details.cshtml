@@ -1,48 +1,61 @@
-﻿@model PhoneBookMVC.Models.Contact
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal;
+@model PhoneBookMVC.Models.Contact
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Html.DisplayFor(model => model.FullName)</h1>
 
 <div>
-    <h4>Contact</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd>
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
+        @if (Model.LastName != "" && Model.LastName != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+        }
+        @if (Model.Email != "" && Model.Email != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+        }
+        @if (Model.PhoneNumber != "" && Model.PhoneNumber != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+        }
+        @if (Model.PhoneNumber != "" && Model.PhoneNumber != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+        }
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id"><input type="button" value="Edit" class="btn btn-primary" /></a>
+    <a asp-action="Index"><input type="button" value="Back" class="btn btn-secondary" /></a>
+    <!--<input type="button" value="Back" class="btn btn-secondary" onclick="javascript:window.history.go(-1)" />-->
 </div>
