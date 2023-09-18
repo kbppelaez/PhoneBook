@@ -68,7 +68,7 @@ namespace PhoneBookCore.Pages.Contacts
     public class ContactInfo
     {
         public int Id;
-        public string? FirstName;
+        public string FirstName = String.Empty;
         public string? LastName;
         public string? EmailAdd;
         public string? PhoneNumber;
