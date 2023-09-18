@@ -45,10 +45,11 @@ else if (Model.errorMsg.Length != 0)
             <input type="text" name="Notes" class="form-control" value="@Model.contact.Notes" />
             <span class="text-danger"></span>
         </div>
+        <input type="hidden" name="id" value="@Model.contact.Id" />
         <br />
         <div class="form-group">
-            <input type="submit" value="Create" class="btn btn-primary" />
-            <a href="/Contacts/Index" class="btn btn-secondary">Cancel</a>
+            <input type="submit" value="Save" class="btn btn-primary" />
+            <a href="/Contacts/View?id=@Model.contact.Id" class="btn btn-secondary">Cancel</a>
         </div>
     </div>
 </form>
