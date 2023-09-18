@@ -82,6 +82,7 @@ namespace PhoneBookCore.Pages.Contacts
             query += ") VALUES (";
             query += "@firstname, @lastname, @email, @phone, @notes";
             query += ");";
+            query += "set @ID = scope_identity();";
 
             return query;
         }
