@@ -6,7 +6,7 @@ namespace PhoneBookCore.Pages.Contacts
 {
     public class IndexModel : PageModel
     {
-        List<ContactInfo> contacts = new List<ContactInfo>();
+        public List<ContactInfo> contacts = new List<ContactInfo>();
 
         public void OnGet()
         {
