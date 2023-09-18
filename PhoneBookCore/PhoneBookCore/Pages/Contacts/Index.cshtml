@@ -1,4 +1,16 @@
 ﻿@page
 @model PhoneBookCore.Pages.Contacts.IndexModel
 @{
+    ViewData["Title"] = "Contacts";
 }
+
+<table>
+    <tbody>
+        @foreach (var contact in Model.contacts)
+        {
+            <tr>
+                <td>@contact.FullName</td>
+            </tr>
+        }
+    </tbody>
+</table>
