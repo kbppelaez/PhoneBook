@@ -1,0 +1,36 @@
+﻿@page
+@using System.Data.SqlClient;
+
+@{
+
+    String id = Request.Query["id"];
+    try
+    {
+        String connectionString = "Data Source=.\\sqlexpress;";
+        connectionString += "Initial Catalog=Phonebook;";
+        connectionString += "User ID=sa;";
+        connectionString += "Password=t1g3r";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            String query = "DELETE FROM Contact ";
+            query += "WHERE ContactId = @ID;";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.Add("@ID", System.Data.SqlDbType.Int).Value = id;
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        Response.Redirect("/Contacts/Index");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+
+}
