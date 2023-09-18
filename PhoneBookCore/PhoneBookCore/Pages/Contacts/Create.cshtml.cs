@@ -8,6 +8,7 @@ namespace PhoneBookCore.Pages.Contacts
     {
         public ContactInfo contact = new ContactInfo();
         public String errorMsg = string.Empty;
+        public bool success = false;
 
         public void OnGet()
         {
@@ -20,14 +21,12 @@ namespace PhoneBookCore.Pages.Contacts
             contact.PhoneNumber = Request.Form["PhoneNumber"];
             contact.Notes = Request.Form["Notes"];
 
-            bool result = AddContactToDatabase();
-            if(result)
+            success = AddContactToDatabase();
+            if(success)
             {
                 //success
-            }
-            else
-            {
-                //failed
+                errorMsg = string.Empty;
+                Response.Redirect("/Contacts/View/" + contact.Id);
             }
         }
 
@@ -44,18 +43,24 @@ namespace PhoneBookCore.Pages.Contacts
                     String query = BuildInsertQuery();
                     using(SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@firstname", contact.FirstName);
-                        cmd.Parameters.AddWithValue("@lastname", contact.LastName);
-                        cmd.Parameters.AddWithValue("@email", contact.EmailAdd);
-                        cmd.Parameters.AddWithValue("@phone", contact.PhoneNumber);
-                        cmd.Parameters.AddWithValue("@notes", contact.Notes);
+                        SqlParameter IdParam = new SqlParameter("@ID", System.Data.SqlDbType.Int);
+                        IdParam.Direction = System.Data.ParameterDirection.Output;
+                        cmd.Parameters.Add(IdParam);
+                        cmd.Parameters.Add("@firstname", System.Data.SqlDbType.VarChar,30).Value = contact.FirstName;
+                        cmd.Parameters.Add("@lastname", System.Data.SqlDbType.VarChar, 30).Value = contact.LastName;
+                        cmd.Parameters.Add("@email", System.Data.SqlDbType.VarChar, 30).Value = contact.EmailAdd;
+                        cmd.Parameters.Add("@phone", System.Data.SqlDbType.VarChar, 20).Value = contact.PhoneNumber;
+                        cmd.Parameters.Add("@phone", System.Data.SqlDbType.Text).Value = contact.PhoneNumber;
 
                         cmd.ExecuteNonQuery();
+
+                        contact.Id = (int)IdParam.Value;
                     }
                 }
 
             }catch (Exception ex)
             {
+                errorMsg = ex.Message;
                 return false;
             }
 
