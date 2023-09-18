@@ -2,3 +2,53 @@
 @model PhoneBookCore.Pages.Contacts.EditModel
 @{
 }
+
+@if (Model.success)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Contact Successfully Added!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+else if (Model.errorMsg.Length != 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMsg</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form method="POST">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="FirstName"><b>First Name</b></label>
+            <input type="text" name="FirstName" class="form-control" required value="@Model.contact.FirstName" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="LastName"><b>Last Name</b></label>
+            <input type="text" name="LastName" class="form-control" value="@Model.contact.LastName" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="EmailAdd"><b>Email Address</b></label>
+            <input type="email" name="EmailAdd" class="form-control" value="@Model.contact.EmailAdd" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="PhoneNumber"><b>Phone Number</b></label>
+            <input type="text" name="PhoneNumber" class="form-control" pattern="^\+?[0-9]{6,}$" value="@Model.contact.PhoneNumber" />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Notes"><b>Notes</b></label>
+            <input type="text" name="Notes" class="form-control" value="@Model.contact.Notes" />
+            <span class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <a href="/Contacts/Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </div>
+</form>
