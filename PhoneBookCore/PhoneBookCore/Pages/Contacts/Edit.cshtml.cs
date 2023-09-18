@@ -49,6 +49,63 @@ namespace PhoneBookCore.Pages.Contacts
             }
         }
 
+        public void OnPost()
+        {
+            contact.Id = Request.Form["id"];
+            contact.FirstName = Request.Form["FirstName"];
+            contact.LastName = Request.Form["LastName"];
+            contact.EmailAdd = Request.Form["EmailAdd"];
+            contact.PhoneNumber = Request.Form["PhoneNumber"];
+            contact.Notes = Request.Form["Notes"];
+
+            success = UpdateDatabase();
+            if (success)
+            {
+                errorMsg = string.Empty;
+                Response.Redirect("/Contacts/View?id=" + contact.Id);
+            }
+        }
+
+        private bool UpdateDatabase()
+        {
+            try
+            {
+                String connectionString = GetConnectionString();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    String query = "UPDATE Contact ";
+                    query += "SET FirstName=@firstname, LastName=@lastname, ";
+                    query += "PhoneNumber=@phone, EmailAdd=@email, ";
+                    query += "Notes=@notes ";
+                    query += "WHERE ContactId = @ID;";
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.Add("@ID", System.Data.SqlDbType.Int).Value = contact.Id;
+                        cmd.Parameters.Add("@firstname", System.Data.SqlDbType.VarChar).Value = contact.FirstName;
+                        cmd.Parameters.Add("@lastname", System.Data.SqlDbType.VarChar).Value
+                            = string.IsNullOrEmpty(contact.LastName) ? DBNull.Value : contact.LastName;
+                        cmd.Parameters.Add("@email", System.Data.SqlDbType.VarChar).Value
+                            = string.IsNullOrEmpty(contact.EmailAdd) ? DBNull.Value : contact.EmailAdd;
+                        cmd.Parameters.Add("@phone", System.Data.SqlDbType.VarChar).Value
+                            = string.IsNullOrEmpty(contact.PhoneNumber) ? DBNull.Value : contact.PhoneNumber;
+                        cmd.Parameters.Add("@notes", System.Data.SqlDbType.Text).Value
+                            = string.IsNullOrEmpty(contact.Notes) ? DBNull.Value : contact.Notes;
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                return false;
+            }
+            return true;
+        }
         private String GetConnectionString()
         {
             String conString = "Data Source=.\\sqlexpress;";
