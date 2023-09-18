@@ -55,5 +55,16 @@ namespace PhoneBookCore.Pages.Contacts
         public string PhoneNumber;
         public string Notes;
 
+        public string FullName
+        {
+            get
+            {
+                if(LastName == null)
+                {
+                    return FirstName;
+                }else return FirstName + " " + LastName;
+            }
+        }
+
     }
 }
