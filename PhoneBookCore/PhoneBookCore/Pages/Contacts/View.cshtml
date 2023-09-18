@@ -2,3 +2,36 @@
 @model PhoneBookCore.Pages.Contacts.ViewModel
 @{
 }
+
+<h2><strong>@Model.contact.FullName</strong></h2>
+
+<div>
+    @if (!string.IsNullOrEmpty(Model.contact.EmailAdd))
+    {
+        <div>
+            <strong>Email Address</strong><br />
+            @Model.contact.EmailAdd
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.contact.PhoneNumber))
+    {
+        <div>
+            <strong>Phone Number</strong><br />
+            @Model.contact.PhoneNumber
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.contact.Notes))
+    {
+        <div>
+            <strong>Notes</strong><br />
+            @Model.contact.Notes
+        </div>
+    }
+</div>
+<br />
+<div class="form-group">
+    <a href="/Contacts/Edit/id=@Model.contact.Id" class="btn btn-primary">Edit</a>
+    <a href="/Contacts/Index" class="btn btn-secondary">Back</a>
+</div>
