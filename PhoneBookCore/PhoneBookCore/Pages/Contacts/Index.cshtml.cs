@@ -18,7 +18,7 @@ namespace PhoneBookCore.Pages.Contacts
                 {
                     connection.Open();
 
-                    String query = "SELECT * FROM Contact";
+                    String query = "SELECT * FROM Contact ORDER BY FirstName";
                     using(SqlCommand command = new SqlCommand(query, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -49,7 +49,7 @@ namespace PhoneBookCore.Pages.Contacts
             while (reader.Read())
             {
                 ContactInfo contact = new ContactInfo();
-                contact.Id = reader.GetString(0);
+                contact.Id = "" + reader.GetInt32(0);
                 contact.FirstName = reader.GetString(1);
                 if (!reader.IsDBNull(2))
                     contact.LastName = reader.GetString(2);
