@@ -54,7 +54,7 @@ namespace PhoneBookCore.Pages.Contacts
 
                         cmd.ExecuteNonQuery();
 
-                        contact.Id = (int)IdParam.Value;
+                        contact.Id = "" + IdParam.Value;
                     }
                 }
 

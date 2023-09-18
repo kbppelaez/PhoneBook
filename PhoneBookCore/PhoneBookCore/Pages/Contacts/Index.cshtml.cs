@@ -49,7 +49,7 @@ namespace PhoneBookCore.Pages.Contacts
             while (reader.Read())
             {
                 ContactInfo contact = new ContactInfo();
-                contact.Id = reader.GetInt32(0);
+                contact.Id = reader.GetString(0);
                 contact.FirstName = reader.GetString(1);
                 if (!reader.IsDBNull(2))
                     contact.LastName = reader.GetString(2);
@@ -67,8 +67,8 @@ namespace PhoneBookCore.Pages.Contacts
 
     public class ContactInfo
     {
-        public int Id;
-        public string FirstName = String.Empty;
+        public string Id = string.Empty;
+        public string FirstName = string.Empty;
         public string? LastName;
         public string? EmailAdd;
         public string? PhoneNumber;
