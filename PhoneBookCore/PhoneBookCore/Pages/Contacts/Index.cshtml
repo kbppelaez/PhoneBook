@@ -4,13 +4,11 @@
     ViewData["Title"] = "Contacts";
 }
 
-<table>
-    <tbody>
-        @foreach (var contact in Model.contacts)
-        {
-            <tr>
-                <td>@contact.FullName</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="list-group" id="list-tab" role="tablist">
+    @foreach (var contact in Model.contacts)
+    {
+        <a href="/Contacts/View?id=@contact.Id" class="list-group-item list-group-item-action">
+            @contact.FullName
+        </a>
+    }
+</div>
