@@ -4,6 +4,21 @@
     ViewData["Title"] = "Add New Contact";
 }
 
+@if(Model.success)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Contact Successfully Added!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+else if(Model.errorMsg.Length != 0)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMsg</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <form method="POST">
     <div class="col-md-4">
         <div class="form-group">
