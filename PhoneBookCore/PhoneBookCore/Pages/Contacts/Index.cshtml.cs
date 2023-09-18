@@ -12,13 +12,16 @@ namespace PhoneBookCore.Pages.Contacts
         {
             try
             {
-                String connectionString = "Data Source=.\\sqlexpress;Initial Catalog=Phonebook;User ID=sa;Password=***********";
+                String connectionString = "Data Source=.\\sqlexpress;";
+                connectionString += "Initial Catalog=Phonebook;";
+                connectionString += "User ID=sa;";
+                connectionString += "Password=t1g3r";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
-                    String query = "SELECT * FROM Contact;";
+                    String query = "SELECT * FROM Contact";
                     using(SqlCommand command = new SqlCommand(query, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -28,10 +31,14 @@ namespace PhoneBookCore.Pages.Contacts
                                 ContactInfo contact = new ContactInfo();
                                 contact.Id = reader.GetInt32(0);
                                 contact.FirstName = reader.GetString(1);
-                                contact.LastName = reader.GetString(2);
-                                contact.EmailAdd = reader.GetString(3);
-                                contact.PhoneNumber = reader.GetString(4);
-                                contact.Notes = reader.GetString(5);
+                                if (!reader.IsDBNull(2))
+                                    contact.LastName = reader.GetString(2);
+                                if (!reader.IsDBNull(3))
+                                    contact.EmailAdd = reader.GetString(3);
+                                if (!reader.IsDBNull(4))
+                                    contact.PhoneNumber = reader.GetString(4);
+                                if (!reader.IsDBNull(5))
+                                    contact.Notes = reader.GetString(5);
 
                                 contacts.Add(contact);
                             }
@@ -49,11 +56,11 @@ namespace PhoneBookCore.Pages.Contacts
     public class ContactInfo
     {
         public int Id;
-        public string FirstName;
-        public string LastName;
-        public string EmailAdd;
-        public string PhoneNumber;
-        public string Notes;
+        public string? FirstName;
+        public string? LastName;
+        public string? EmailAdd;
+        public string? PhoneNumber;
+        public string? Notes;
 
         public string FullName
         {
