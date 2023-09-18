@@ -12,10 +12,7 @@ namespace PhoneBookCore.Pages.Contacts
         {
             try
             {
-                String connectionString = "Data Source=.\\sqlexpress;";
-                connectionString += "Initial Catalog=Phonebook;";
-                connectionString += "User ID=sa;";
-                connectionString += "Password=t1g3r";
+                String connectionString = GetConnectionString();
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -26,22 +23,7 @@ namespace PhoneBookCore.Pages.Contacts
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            while (reader.Read())
-                            {
-                                ContactInfo contact = new ContactInfo();
-                                contact.Id = reader.GetInt32(0);
-                                contact.FirstName = reader.GetString(1);
-                                if (!reader.IsDBNull(2))
-                                    contact.LastName = reader.GetString(2);
-                                if (!reader.IsDBNull(3))
-                                    contact.EmailAdd = reader.GetString(3);
-                                if (!reader.IsDBNull(4))
-                                    contact.PhoneNumber = reader.GetString(4);
-                                if (!reader.IsDBNull(5))
-                                    contact.Notes = reader.GetString(5);
-
-                                contacts.Add(contact);
-                            }
+                            ReadData(reader);
                         }
                     }
                 }
@@ -49,6 +31,36 @@ namespace PhoneBookCore.Pages.Contacts
             catch (Exception ex)
             {
                 Console.WriteLine("Exception: " + ex.Message);
+            }
+        }
+
+        private String GetConnectionString()
+        {
+            String connectionString = "Data Source=.\\sqlexpress;";
+            connectionString += "Initial Catalog=Phonebook;";
+            connectionString += "User ID=sa;";
+            connectionString += "Password=t1g3r";
+
+            return connectionString;
+        }
+
+        private void ReadData(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                ContactInfo contact = new ContactInfo();
+                contact.Id = reader.GetInt32(0);
+                contact.FirstName = reader.GetString(1);
+                if (!reader.IsDBNull(2))
+                    contact.LastName = reader.GetString(2);
+                if (!reader.IsDBNull(3))
+                    contact.EmailAdd = reader.GetString(3);
+                if (!reader.IsDBNull(4))
+                    contact.PhoneNumber = reader.GetString(4);
+                if (!reader.IsDBNull(5))
+                    contact.Notes = reader.GetString(5);
+
+                contacts.Add(contact);
             }
         }
     }
