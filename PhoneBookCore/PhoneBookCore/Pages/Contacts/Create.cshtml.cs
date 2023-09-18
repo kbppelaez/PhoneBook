@@ -26,7 +26,7 @@ namespace PhoneBookCore.Pages.Contacts
             {
                 //success
                 errorMsg = string.Empty;
-                Response.Redirect("/Contacts/View/" + contact.Id);
+                Response.Redirect("/Contacts/View?id=" + contact.Id);
             }
         }
 
@@ -46,11 +46,17 @@ namespace PhoneBookCore.Pages.Contacts
                         SqlParameter IdParam = new SqlParameter("@ID", System.Data.SqlDbType.Int);
                         IdParam.Direction = System.Data.ParameterDirection.Output;
                         cmd.Parameters.Add(IdParam);
-                        cmd.Parameters.Add("@firstname", System.Data.SqlDbType.VarChar,30).Value = contact.FirstName;
-                        cmd.Parameters.Add("@lastname", System.Data.SqlDbType.VarChar, 30).Value = contact.LastName;
-                        cmd.Parameters.Add("@email", System.Data.SqlDbType.VarChar, 30).Value = contact.EmailAdd;
-                        cmd.Parameters.Add("@phone", System.Data.SqlDbType.VarChar, 20).Value = contact.PhoneNumber;
-                        cmd.Parameters.Add("@phone", System.Data.SqlDbType.Text).Value = contact.PhoneNumber;
+
+                        cmd.Parameters.Add("@firstname", System.Data.SqlDbType.VarChar, 30).Value
+                            = string.IsNullOrEmpty(contact.FirstName) ? System.DBNull.Value : contact.FirstName;
+                        cmd.Parameters.Add("@lastname", System.Data.SqlDbType.VarChar, 30).Value
+                            = string.IsNullOrEmpty(contact.LastName) ? System.DBNull.Value : contact.LastName;
+                        cmd.Parameters.Add("@email", System.Data.SqlDbType.VarChar, 30).Value 
+                            = string.IsNullOrEmpty(contact.EmailAdd) ? System.DBNull.Value : contact.EmailAdd;
+                        cmd.Parameters.Add("@phone", System.Data.SqlDbType.VarChar, 20).Value
+                            = string.IsNullOrEmpty(contact.PhoneNumber) ? System.DBNull.Value : contact.PhoneNumber;
+                        cmd.Parameters.Add("@notes", System.Data.SqlDbType.Text).Value
+                            = string.IsNullOrEmpty(contact.Notes) ? System.DBNull.Value : contact.Notes;
 
                         cmd.ExecuteNonQuery();
 
