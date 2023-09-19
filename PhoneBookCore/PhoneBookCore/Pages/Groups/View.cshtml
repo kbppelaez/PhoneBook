@@ -1,0 +1,24 @@
+﻿@page
+@model PhoneBookCore.Pages.Groups.ViewModel
+@{
+}
+
+<h2><strong>@Model.group.Name</strong></h2>
+
+<div>
+    @if (!string.IsNullOrEmpty(Model.group.Description))
+    {
+        <div>
+            <strong>Description</strong><br />
+            @Model.group.Description
+        </div>
+    }
+</div>
+<br />
+<div class="form-group">
+    <a href="/Groups/Edit?id=@Model.group.GId" class="btn btn-primary">Edit</a>
+    <input type="hidden" name="id" value="@Model.group.GId" />
+    <a href="/Group/Delete?id=@Model.group.GId" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+    
+    <a href="/Groups/Index" class="btn btn-secondary">Back</a>
+</div>
