@@ -1,0 +1,15 @@
+﻿@page
+@model PhoneBookCore.Pages.Contacts.SearchModel
+@{
+}
+
+<form method="GET">
+    <div class="col-md-4" style="white-space:nowrap">
+        <div class="form-group" style="display: inline-block">
+            <input type="text" name="search" required value="@Model.SearchString" />
+        </div>
+        <div class="form-group" style="display: inline-block">
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
