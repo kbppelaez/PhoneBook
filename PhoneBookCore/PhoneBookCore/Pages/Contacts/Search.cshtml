@@ -5,9 +5,21 @@
 
 <form method="GET">
     <div class="input-group mb-3">
-        <input type="text" class="form-control" value="@Model.SearchString" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+        <input type="text" class="form-control" value="@Model.SearchString" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" name="search">
         <div class="input-group-append">
-            <button class="btn btn-primary" type="button">Search</button>
+            <input type="submit" class="btn btn-primary" value="Search"/>
         </div>
     </div>
 </form>
+
+@if(Model.Contacts.Count > 0)
+{
+    <div class="list-group" id="list-tab" role="tablist">
+        @foreach(var contact in Model.Contacts)
+        {
+            <a href="/Contacts/View?id=@contact.Id&search=@Model.SearchString" class="list-group-item list-group-item-action">
+                @contact.FullName
+            </a>
+        }
+    </div>
+}
