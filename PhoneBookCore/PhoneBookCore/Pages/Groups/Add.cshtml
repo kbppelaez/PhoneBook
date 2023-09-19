@@ -11,3 +11,17 @@
         </div>
     </div>
 </form>
+
+@if (Model.Groups.Count > 0)
+{
+    <div class="list-group" id="list-tab" role="tablist">
+        @foreach (var group in Model.Groups)
+        {
+            <form method="POST">
+                <input type="hidden" name="cid" value="@Model.ContactId" />
+                <input type="hidden" name="gid" value="@group.GId" />
+                <input type="submit" class="list-group-item list-group-item-action" value="@group.Name" />
+            </form>
+        }
+    </div>
+}
