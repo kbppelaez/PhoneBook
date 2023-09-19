@@ -1,0 +1,13 @@
+﻿@page
+@model PhoneBookCore.Pages.Groups.AddModel
+@{
+}
+
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" value="@Model.SearchString" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" name="search">
+        <div class="input-group-append">
+            <input type="submit" class="btn btn-primary" value="Search" />
+        </div>
+    </div>
+</form>
