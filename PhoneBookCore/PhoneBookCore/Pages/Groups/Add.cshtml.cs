@@ -44,6 +44,45 @@ namespace PhoneBookCore.Pages.Groups
             }
         }
 
+        private void OnPost() {
+            String cid = Request.Form["cid"];
+            String gid = Request.Form["gid"];
+
+            bool success = AddToGroup(cid, gid);
+            if (success)
+            {
+                Response.Redirect("/Groups/View?id=" + gid);
+            }
+        }
+
+        private bool AddToGroup(String cid, String gid)
+        {
+            try
+            {
+                String connectionString = GetConnectionString();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    String query = "INSERT INTO Belongs(ContactId, GroupId) VALUES(@cid, @gid);";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.Add("@cid", System.Data.SqlDbType.Int).Value = cid;
+                        cmd.Parameters.Add("@gid", System.Data.SqlDbType.Int).Value = gid;
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
         private String GetConnectionString()
         {
             String conString = "Data Source=.\\sqlexpress;";
