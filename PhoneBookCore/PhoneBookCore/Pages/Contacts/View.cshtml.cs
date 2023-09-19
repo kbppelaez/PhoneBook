@@ -7,9 +7,11 @@ namespace PhoneBookCore.Pages.Contacts
     public class ViewModel : PageModel
     {
         public ContactInfo contact = new ContactInfo();
+        public string fromSearch = string.Empty;
         public void OnGet()
         {
             string Id = Request.Query["id"];
+            fromSearch = Request.Query["search"];
 
             try
             {
