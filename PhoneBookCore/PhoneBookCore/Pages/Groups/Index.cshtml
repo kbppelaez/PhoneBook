@@ -1,0 +1,16 @@
+﻿@page
+@model PhoneBookCore.Pages.Groups.IndexModel
+@{
+}
+
+@if (Model.Groups.Count > 0)
+{
+    <div class="list-group" id="list-tab" role="tablist">
+        @foreach (var group in Model.Groups)
+        {
+            <a href="/Groups/View?id=@group.GId" class="list-group-item list-group-item-action">
+                @group.Name
+            </a>
+        }
+    </div>
+}
