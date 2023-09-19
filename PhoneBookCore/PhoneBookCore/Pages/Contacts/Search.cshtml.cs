@@ -27,7 +27,6 @@ namespace PhoneBookCore.Pages.Contacts
                         connection.Open();
 
                         String query = GetQueryString();
-                        sqlquery = query; 
 
                         using (SqlCommand cmd = new SqlCommand(query, connection))
                         {
