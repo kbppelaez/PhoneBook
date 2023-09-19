@@ -35,6 +35,7 @@
     <a href="/Contacts/Edit?id=@Model.contact.Id" class="btn btn-primary">Edit</a>
     <input type="hidden" name="id" value="@Model.contact.Id" />
     <a href="/Contacts/Delete?id=@Model.contact.Id" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+    <a href="/Groups/Add?id=@Model.contact.Id" class="btn btn-primary">Add to Group</a>
     @if (string.IsNullOrEmpty(Model.fromSearch))
     {
         <a href="/Contacts/Index" class="btn btn-secondary">Back</a>
