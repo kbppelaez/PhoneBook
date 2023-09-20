@@ -3,10 +3,16 @@
     ViewData["Title"] = "Contact Details";
 }
 
-@if (Model.editSuccess.HasValue && Model.editSuccess.Value)
+@if (Model != null && Model.editSuccess.HasValue && Model.editSuccess.Value)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Contact Successfully Updated!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}else if (Model != null && Model.addSuccess.HasValue && Model.addSuccess.Value)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Contact Successfully Created!</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
