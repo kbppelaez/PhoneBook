@@ -117,5 +117,56 @@ namespace PhonebookV2.Models
 
             return result;
         }
+
+        public async Task<bool> CreateContact(ContactsView contactview)
+        {
+            bool result = false;
+            using(var _context = new ContactsContext()){
+                if(_context.Contact != null)
+                {
+                    Contact contact = new Contact(contactview);
+                    if(contact != null)
+                    {
+                        _context.Contact.Add(contact);
+                    }
+                    int affected = await _context.SaveChangesAsync();
+                    if(affected == 1) result = true;
+                }
+            }
+            return result;
+        }
+
+        public async Task<List<ListContactsView>> SearchContacts(string term)
+        {
+            List<ListContactsView> result = new List<ListContactsView>();
+
+            using(var _context = new ContactsContext())
+            {
+                if(_context.Contact != null)
+                {
+                    var query = from c in _context.Contact
+                                select c;
+
+                    query = query.Where(c => c.FirstName.StartsWith(term)
+                                        || (c.LastName != null && c.LastName.StartsWith(term))
+                                        || (c.Email != null && c.Email.StartsWith(term))
+                                        || (c.PhoneNumber != null && c.PhoneNumber.StartsWith(term))
+                                        || (c.Notes != null && c.Notes.StartsWith(term))
+                                        );
+                    query = query.OrderBy(c => c.FirstName);
+                    
+                    result = await query.Select(
+                                            c => new ListContactsView
+                                            {
+                                                ContactId = c.ContactId,
+                                                FirstName = c.FirstName,
+                                                LastName = c.LastName
+                                            })
+                                        .ToListAsync();
+                }
+            }
+
+            return result;
+        }
     }
 }
