@@ -7,6 +7,7 @@ namespace PhonebookV2.Controllers
     public class ContactsController : Controller
     {
         private readonly ILogger<ContactsController> _logger;
+        private readonly ContactsTable _contacts = new ContactsTable();
 
         public ContactsController(ILogger<ContactsController> logger)
         {
@@ -18,8 +19,7 @@ namespace PhonebookV2.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ContactsTable contacts = new ContactsTable();
-            List<ListContactsView> result = await contacts.ListAll();
+            List<ListContactsView> result = await _contacts.ListAll();
             return View(result);
         }
 
@@ -27,8 +27,7 @@ namespace PhonebookV2.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewContact(int id)
         {
-            ContactsTable contacts = new ContactsTable();
-            ContactsView result = await contacts.Find(id);
+            ContactsView result = await _contacts.Find(id);
 
             if (result.exists.HasValue && result.exists.Value)
             {
@@ -41,8 +40,7 @@ namespace PhonebookV2.Controllers
         [HttpGet]
         public async Task<IActionResult> EditContact(int id)
         {
-            ContactsTable contacts = new ContactsTable();
-            ContactsView result = await contacts.Find(id);
+            ContactsView result = await _contacts.Find(id);
 
             if (result.exists.HasValue && result.exists.Value)
             {
@@ -60,14 +58,13 @@ namespace PhonebookV2.Controllers
                 return NotFound();
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View("EditContact", c);
             }
             else
             {
-                ContactsTable contactsTable = new ContactsTable();
-                var result = await contactsTable.SaveChanges(c);
+                var result = await _contacts.SaveChanges(c);
 
                 return View("ViewContact", result);
             }
@@ -77,8 +74,7 @@ namespace PhonebookV2.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteContact(int id)
         {
-            ContactsTable contactsTable = new ContactsTable();
-            ContactsView contact = await contactsTable.Find(id);
+            ContactsView contact = await _contacts.Find(id);
 
             if (contact.exists.HasValue && contact.exists.Value)
             {
@@ -91,12 +87,47 @@ namespace PhonebookV2.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteContactConfirmed([FromForm] int ContactId)
         {
-            ContactsTable contactsTable = new ContactsTable();
-            if(await contactsTable.DeleteContact(ContactId))
+            if (await _contacts.DeleteContact(ContactId))
             {
                 return RedirectToAction(nameof(Index));
             }
             else return NotFound();
+        }
+
+        [Route("/contacts/create")]
+        [HttpGet]
+        public IActionResult NewContact()
+        {
+            return View();
+        }
+
+        [Route("/contacts/create")]
+        [HttpPost]
+        public async Task<IActionResult> CreateContact([FromForm] ContactsView c)
+        {
+            if (await _contacts.CreateContact(c))
+            {
+                c.addSuccess = true;
+                return View("ViewContact", c);
+            }
+            else return NotFound();
+        }
+
+        [Route("/contacts/search/{term?}")]
+        [HttpGet]
+        public async Task<IActionResult> SearchContact(string? term)
+        {
+            if (term == null)
+            {
+                return View();
+            }
+            else
+            {
+                SearchListView searchView = new SearchListView();
+                searchView.term = term;
+                searchView.Contacts = await _contacts.SearchContacts(term);
+                return View(searchView);
+            }
         }
 
         [Route("/privacy")]
