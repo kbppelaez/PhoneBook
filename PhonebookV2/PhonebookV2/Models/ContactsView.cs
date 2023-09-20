@@ -6,6 +6,7 @@ namespace PhonebookV2.Models
     {
         public bool? exists; //if created instance has valid data
         public bool? editSuccess; //if saving edits is successful
+        public bool? addSuccess; //if creating new contact is successful
         public string errorMsg = string.Empty;
         public int ContactId { get; set; }
         
@@ -87,5 +88,11 @@ namespace PhonebookV2.Models
                 }
             }
         }
+    }
+
+    public class SearchListView
+    {
+        public string? term;
+        public IEnumerable<ListContactsView>? Contacts;
     }
 }
