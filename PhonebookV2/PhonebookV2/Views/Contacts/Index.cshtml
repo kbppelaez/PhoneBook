@@ -3,18 +3,13 @@
     ViewData["Title"] = "Contacts";
 }
 
-<table class="table">
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <!-- Add Image? -->
-            <tr>
-                <td>
-                    <a href="/contacts/@item.ContactId">
-                        @Html.DisplayFor(modelItem => item.FullName)
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="list-group" id="list-tab" role="tablist">
+    @foreach (var item in Model)
+    {
+        <!-- Add Image? -->
+        <a href="/contacts/@item.ContactId" class="list-group-item list-group-item-action">
+            @Html.DisplayFor(modelItem => item.FullName)
+        </a>
+
+    }
+</div>
