@@ -11,8 +11,5 @@ namespace PhonebookV2.Data
         {
         }
 
-        //entities
-        public DbSet<Contact>? contacts { get; set; }
-        
     }
 }
