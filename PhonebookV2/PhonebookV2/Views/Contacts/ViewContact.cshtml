@@ -1,0 +1,42 @@
+﻿@model ContactsView
+@{
+    ViewData["Title"] = "Contact Details";
+}
+
+<h2><strong>@Model.FullName</strong></h2>
+
+<div>
+    @if (!string.IsNullOrEmpty(Model.Email))
+    {
+        <div>
+            <strong>Email Address</strong><br />
+            @Model.Email
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+    {
+        <div>
+            <strong>Phone Number</strong><br />
+            @Model.PhoneNumber
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Notes))
+    {
+        <div>
+            <strong>Notes</strong><br />
+            @Model.Notes
+        </div>
+    }
+</div>
+<br />
+<div class="form-group">
+    <a href="/Contacts/Edit?id=@Model.ContactId" class="btn btn-primary">Edit</a>
+    <input type="hidden" name="id" value="@Model.ContactId" />
+    <a href="/Contacts/Delete?id=@Model.ContactId" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+    <a href="/Groups/Add?id=@Model.ContactId" class="btn btn-primary">Add to Group</a>
+    <a href="/contacts/" class="btn btn-secondary">Back</a>
+    <!--<a href="/Contacts/Search?search=fromSearch" class="btn btn-secondary">Back</a>-->
+    
+</div>

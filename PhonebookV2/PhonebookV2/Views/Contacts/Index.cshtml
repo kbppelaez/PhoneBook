@@ -1,0 +1,20 @@
+﻿@model IEnumerable<ListContactsView>
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <!-- Add Image? -->
+            <tr>
+                <td>
+                    <a href="/contacts/@item.ContactId">
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
