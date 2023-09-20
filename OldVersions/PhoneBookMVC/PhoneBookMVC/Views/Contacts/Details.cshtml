@@ -1,0 +1,66 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal;
+@model PhoneBookMVC.Models.Contact
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Html.DisplayFor(model => model.FullName)</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        @if (Model.LastName != "" && Model.LastName != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+        }
+        @if (Model.Email != "" && Model.Email != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+        }
+        @if (Model.PhoneNumber != "" && Model.PhoneNumber != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+        }
+        @if (Model.Notes != "" && Model.Notes != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+        }
+    </dl>
+</div>
+<div>
+    <form asp-action="Delete">
+        <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Id">Edit</a>
+
+        <input type="hidden" asp-for="Id" />
+        <button class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+
+         <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
