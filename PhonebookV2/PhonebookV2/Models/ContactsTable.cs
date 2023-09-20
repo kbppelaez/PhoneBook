@@ -147,11 +147,11 @@ namespace PhonebookV2.Models
                     var query = from c in _context.Contact
                                 select c;
 
-                    query = query.Where(c => c.FirstName.StartsWith(term)
-                                        || (c.LastName != null && c.LastName.StartsWith(term))
-                                        || (c.Email != null && c.Email.StartsWith(term))
-                                        || (c.PhoneNumber != null && c.PhoneNumber.StartsWith(term))
-                                        || (c.Notes != null && c.Notes.StartsWith(term))
+                    query = query.Where(c => c.FirstName.ToLower().StartsWith(term.ToLower())
+                                        || (c.LastName != null && c.LastName.ToLower().StartsWith(term.ToLower()))
+                                        || (c.Email != null && c.Email.ToLower().StartsWith(term.ToLower()))
+                                        || (c.PhoneNumber != null && c.PhoneNumber.ToLower().StartsWith(term.ToLower()))
+                                        || (c.Notes != null && c.Notes.ToLower().StartsWith(term.ToLower()))
                                         );
                     query = query.OrderBy(c => c.FirstName);
                     
