@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PhonebookV2.Models;
 using System.Diagnostics;
 
@@ -38,6 +39,7 @@ namespace PhonebookV2.Controllers
 
         [Route("contacts/{id:int}/edit")]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> EditContact(int id)
         {
             ContactsView result = await _contacts.Find(id);
@@ -51,6 +53,7 @@ namespace PhonebookV2.Controllers
 
         [Route("contacts/{id:int}/edit")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> SaveChanges([FromForm] ContactsView c, int id)
         {
             if (c.ContactId != id)
@@ -72,6 +75,7 @@ namespace PhonebookV2.Controllers
 
         [Route("contacts/{id:int}/delete")]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DeleteContact(int id)
         {
             ContactsView contact = await _contacts.Find(id);
@@ -85,6 +89,7 @@ namespace PhonebookV2.Controllers
 
         [Route("/contacts/{id:int}/delete")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteContactConfirmed([FromForm] int ContactId)
         {
             if (await _contacts.DeleteContact(ContactId))
@@ -96,6 +101,7 @@ namespace PhonebookV2.Controllers
 
         [Route("/contacts/create")]
         [HttpGet]
+        [Authorize]
         public IActionResult NewContact()
         {
             return View();
@@ -103,6 +109,7 @@ namespace PhonebookV2.Controllers
 
         [Route("/contacts/create")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateContact([FromForm] ContactsView c)
         {
             if (await _contacts.CreateContact(c))
