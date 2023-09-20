@@ -19,21 +19,84 @@ namespace PhonebookV2.Controllers
         public async Task<IActionResult> Index()
         {
             ContactsTable contacts = new ContactsTable();
-            var result = await contacts.ListAll();
+            List<ListContactsView> result = await contacts.ListAll();
             return View(result);
         }
 
-        [Route("contacts/{id}")]
-        public IActionResult ViewContact(int id)
+        [Route("contacts/{id:int}")]
+        [HttpGet]
+        public async Task<IActionResult> ViewContact(int id)
         {
             ContactsTable contacts = new ContactsTable();
-            ContactsView result = contacts.Find(id);
+            ContactsView result = await contacts.Find(id);
 
-            if (result.exists)
+            if (result.exists.HasValue && result.exists.Value)
             {
                 return View(result);
             }
-            else return View("error");
+            else return NotFound();
+        }
+
+        [Route("contacts/{id:int}/edit")]
+        [HttpGet]
+        public async Task<IActionResult> EditContact(int id)
+        {
+            ContactsTable contacts = new ContactsTable();
+            ContactsView result = await contacts.Find(id);
+
+            if (result.exists.HasValue && result.exists.Value)
+            {
+                return View(result);
+            }
+            else return NotFound();
+        }
+
+        [Route("contacts/{id:int}/edit")]
+        [HttpPost]
+        public async Task<IActionResult> SaveChanges([FromForm] ContactsView c, int id)
+        {
+            if (c.ContactId != id)
+            {
+                return NotFound();
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return View("EditContact", c);
+            }
+            else
+            {
+                ContactsTable contactsTable = new ContactsTable();
+                var result = await contactsTable.SaveChanges(c);
+
+                return View("ViewContact", result);
+            }
+        }
+
+        [Route("contacts/{id:int}/delete")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteContact(int id)
+        {
+            ContactsTable contactsTable = new ContactsTable();
+            ContactsView contact = await contactsTable.Find(id);
+
+            if (contact.exists.HasValue && contact.exists.Value)
+            {
+                return View(contact);
+            }
+            else return NotFound();
+        }
+
+        [Route("/contacts/{id:int}/delete")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteContactConfirmed([FromForm] int ContactId)
+        {
+            ContactsTable contactsTable = new ContactsTable();
+            if(await contactsTable.DeleteContact(ContactId))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else return NotFound();
         }
 
         [Route("/privacy")]
