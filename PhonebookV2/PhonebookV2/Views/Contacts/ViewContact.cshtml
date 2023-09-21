@@ -17,39 +17,42 @@
     </div>
 }
 
-<h2><strong>@Model.FullName</strong></h2>
+@if(Model != null)
+{
+    <h2><strong>@Model.FullName</strong></h2>
 
-<div>
-    @if (!string.IsNullOrEmpty(Model.Email))
-    {
-        <div>
-            <strong>Email Address</strong><br />
-            @Model.Email
-        </div>
-    }
+    <div>
+        @if (!string.IsNullOrEmpty(Model.Email))
+        {
+            <div>
+                <strong>Email Address</strong><br />
+                @Model.Email
+            </div>
+        }
 
-    @if (!string.IsNullOrEmpty(Model.PhoneNumber))
-    {
-        <div>
-            <strong>Phone Number</strong><br />
-            @Model.PhoneNumber
-        </div>
-    }
+        @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+        {
+            <div>
+                <strong>Phone Number</strong><br />
+                @Model.PhoneNumber
+            </div>
+        }
 
-    @if (!string.IsNullOrEmpty(Model.Notes))
-    {
-        <div>
-            <strong>Notes</strong><br />
-            @Model.Notes
-        </div>
-    }
-</div>
-<br />
-<div class="form-group">
-    <a href="/contacts/@Model.ContactId/edit" class="btn btn-primary">Edit</a>
-    <a href="/contacts/@Model.ContactId/delete" class="btn btn-danger">Delete</a>
-    <!--<a href="/Groups/Add?id=@Model.ContactId" class="btn btn-primary">Add to Group</a>-->
-    <a href="/contacts/" class="btn btn-secondary">Back</a>
-    <!--<a href="/Contacts/Search?search=fromSearch" class="btn btn-secondary">Back</a>-->
-    
-</div>
+        @if (!string.IsNullOrEmpty(Model.Notes))
+        {
+            <div>
+                <strong>Notes</strong><br />
+                @Model.Notes
+            </div>
+        }
+    </div>
+    <br />
+    <div class="form-group">
+        <a href="/contacts/@Model.ContactId/edit" class="btn btn-primary">Edit</a>
+        <a href="/contacts/@Model.ContactId/delete" class="btn btn-danger">Delete</a>
+        <!--<a href="/Groups/Add?id=@Model.ContactId" class="btn btn-primary">Add to Group</a>-->
+        <a href="/contacts/" class="btn btn-secondary">Back</a>
+        <!--<a href="/Contacts/Search?search=fromSearch" class="btn btn-secondary">Back</a>-->
+
+    </div>
+}
