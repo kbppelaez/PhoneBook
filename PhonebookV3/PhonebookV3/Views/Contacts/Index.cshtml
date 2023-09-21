@@ -1,0 +1,76 @@
+﻿@using PhonebookV3.Core;
+@using PhonebookV3.Core.DataTransferObjects;
+@model ContactSearchViewModel
+
+@{
+    ViewData["Title"] = "Contacts";
+
+    var backparams = Model.args.ToParam(-1);
+    var nextparams = Model.args.ToParam( 1);
+    var currpage = Model.args.Page + 1;
+}
+
+<form method="GET" asp-controller="Contacts" asp-action="/contacts">
+    <div class="input-group mb-3">
+        @if (string.IsNullOrEmpty(Model.args.Term))
+        {
+            <input type="text" class="form-control" value="" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" name="term">
+        }
+        else
+        {
+            <input type="text" class="form-control" value="@Model.args.Term" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" name="term">
+        }
+        <div class="input-group-append">
+            <input type="submit" class="btn btn-primary" value="Search" />
+        </div>
+    </div>
+</form>
+
+@if(Model.Contacts.Length == 0)
+{
+    <br/><br />
+    <div align="center">
+        <h2>No Results</h2>
+    </div>
+}else
+{
+    <div class="list-group" id="list-tab" role="tablist">
+        @foreach (var item in Model.Contacts)
+        {
+            <!-- Add Image? -->
+            <a href="/contacts/@item.Id" class="list-group-item list-group-item-action">
+                @Html.DisplayFor(modelItem => item.FullName)
+            </a>
+
+        }
+    </div>
+    <br />
+    <div align="center">
+        <div>
+            <nav aria-label="pagination">
+                <ul class="pagination">
+                    <!-- Check if 1st page -->
+                    @if (Model.args.Page == 0)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Back</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a asp-route="index" asp-all-route-data="backparams" class="page-link">Back</a>
+                        </li>
+                    }
+                    <li class="page-item"><a class="page-link" href="#">@currpage</a></li>
+                    <li class="page-item">
+                        <!--
+                            Check if last page to disable Next Button
+                        -->
+                        <a asp-route="index" asp-all-route-data="nextparams" class="page-link">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+}

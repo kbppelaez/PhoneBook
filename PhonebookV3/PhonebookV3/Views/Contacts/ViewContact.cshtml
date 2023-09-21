@@ -1,0 +1,66 @@
+﻿@model ContactDetailsViewModel
+@{
+    ViewData["Title"] = "Contact Details";
+}
+
+@if (Model.fromEdit)
+{
+    if (Model.success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Contact Successfully Updated!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>@Model.errorMsg</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+else if (Model.fromAdd)
+{
+    if (Model.success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Contact Successfully Created!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+
+<h2><strong>@Model.Details.Name</strong></h2>
+
+<div>
+    @if (!string.IsNullOrEmpty(Model.Details.Email))
+    {
+        <div>
+            <strong>Email Address</strong><br />
+            @Model.Details.Email
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Details.PhoneNumber))
+    {
+        <div>
+            <strong>Phone Number</strong><br />
+            @Model.Details.PhoneNumber
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Details.Notes))
+    {
+        <div>
+            <strong>Notes</strong><br />
+            @Model.Details.Notes
+        </div>
+    }
+</div>
+<br />
+<div class="form-group">
+    <a href="/contacts/@Model.Details.Id/edit" class="btn btn-primary">Edit</a>
+    <a href="/contacts/@Model.Details.Id/delete" class="btn btn-danger">Delete</a>
+    <a href="/contacts/" class="btn btn-secondary">Back</a>
+</div>

@@ -1,0 +1,55 @@
+﻿@model ContactDetailsViewModel
+@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+@{
+    ViewData["Title"] = "Edit Contact Details";
+}
+
+@if (Model.fromEdit)
+{
+    if (!Model.success)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>@Model.errorMsg</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="POST" asp-controller="Contacts" asp-action="contacts/@Model.Details.Id/edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="@Model.Details.Id" />
+            <div class="form-group">
+                <label for="FirstName"><b>First Name</b></label>
+                <input asp-for="@Model.Details.FirstName" class="form-control" />
+                <span asp-validation-for="@Model.Details.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="LastName"><b>Last Name</b></label>
+                <input asp-for="@Model.Details.LastName" class="form-control" />
+                <span asp-validation-for="@Model.Details.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Email"><b>Email Address</b></label>
+                <input asp-for="@Model.Details.Email" class="form-control" />
+                <span asp-validation-for="@Model.Details.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="PhoneNumber"><b>Phone Number</b></label>
+                <input asp-for="@Model.Details.PhoneNumber" class="form-control" />
+                <span asp-validation-for="@Model.Details.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Notes"><b>Notes</b></label>
+                <input asp-for="@Model.Details.Notes" class="form-control" />
+                <span asp-validation-for="@Model.Details.Notes" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a href="/contacts/@Model.Details.Id" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
