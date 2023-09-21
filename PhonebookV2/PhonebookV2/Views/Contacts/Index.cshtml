@@ -1,10 +1,12 @@
-﻿@model IEnumerable<ListContactsView>
+﻿@using PhonebookV2.Core;
+@model ContactsSearchViewModel
 @{
     ViewData["Title"] = "Contacts";
+    int pageIndexView = Model.QueryArgs.Page.GetValueOrDefault() + 1;
 }
 
 <div class="list-group" id="list-tab" role="tablist">
-    @foreach (var item in Model)
+    @foreach (var item in Model.Contacts )
     {
         <!-- Add Image? -->
         <a href="/contacts/@item.ContactId" class="list-group-item list-group-item-action">
@@ -13,3 +15,8 @@
 
     }
 </div>
+<a href="@Url.Action("Index","Contacts", new { term = Model.QueryArgs.Term, page = Model.QueryArgs.Page.GetValueOrDefault() - 1})">Back</a>
+
+<span>@pageIndexView</span>
+
+<a href="@Url.Action("Index","Contacts", new { term = Model.QueryArgs.Term, page = Model.QueryArgs.Page.GetValueOrDefault() + 1})">Next</a>

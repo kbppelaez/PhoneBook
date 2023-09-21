@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PhonebookV2.Data;
 
 namespace PhonebookV2.Models
 {
@@ -17,17 +18,17 @@ namespace PhonebookV2.Models
         
         [StringLength(50)]
         [Display(Name = "Last Name")]
-        public string? LastName { get; set; }
+        public string LastName { get; set; }
         
         [Display(Name = "Email Address")]
         [EmailAddress]
-        public string? Email { get; set; }
+        public string Email { get; set; }
 
         [Display(Name = "Phone Number")]
-        public string? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         
         [Display(Name = "Notes")]
-        public string? Notes { get; set; }
+        public string Notes { get; set; }
 
         [Display(Name = "Name")]
         public string FullName
@@ -73,7 +74,7 @@ namespace PhonebookV2.Models
     {
         public int ContactId;
         public string FirstName = string.Empty;
-        public string? LastName;
+        public string LastName;
         public string FullName
         {
             get
@@ -92,7 +93,7 @@ namespace PhonebookV2.Models
 
     public class SearchListView
     {
-        public string? term;
-        public IEnumerable<ListContactsView>? Contacts;
+        public string term;
+        public IEnumerable<ListContactsView> Contacts;
     }
 }

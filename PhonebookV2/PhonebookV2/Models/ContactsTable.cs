@@ -1,5 +1,4 @@
-﻿using PhonebookV2.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PhonebookV2.Data;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +19,7 @@ namespace PhonebookV2.Models
         public async Task<List<ListContactsView>> ListAll()
         {
             List<ListContactsView> result;
-            using (var _context = new ContactsContext())
+            using (var _context = new PhonebookDbContext())
             {
                 var query = from c in _context.Contact
                             select c;
@@ -40,11 +39,11 @@ namespace PhonebookV2.Models
 
         public async Task<ContactsView> Find(int id)
         {
-            ContactsView? result;
+            ContactsView result;
 
             try
             {
-                using (var _context = new ContactsContext())
+                using (var _context = new PhonebookDbContext())
                 {
                     var query = from c in _context.Contact
                                 select c;
@@ -80,7 +79,7 @@ namespace PhonebookV2.Models
         {
             try
             {
-                using(var _context = new ContactsContext())
+                using(var _context = new PhonebookDbContext())
                 {
                     _context.Update(new Contact(contact));
                     await _context.SaveChangesAsync();
@@ -101,7 +100,7 @@ namespace PhonebookV2.Models
         {
             bool result = false;
 
-            using(var _context = new ContactsContext())
+            using(var _context = new PhonebookDbContext())
             {
                 if(_context.Contact != null)
                 {
@@ -121,7 +120,7 @@ namespace PhonebookV2.Models
         public async Task<bool> CreateContact(ContactsView contactview)
         {
             bool result = false;
-            using(var _context = new ContactsContext()){
+            using(var _context = new PhonebookDbContext()){
                 if(_context.Contact != null)
                 {
                     Contact contact = new Contact(contactview);
@@ -140,7 +139,7 @@ namespace PhonebookV2.Models
         {
             List<ListContactsView> result = new List<ListContactsView>();
 
-            using(var _context = new ContactsContext())
+            using(var _context = new PhonebookDbContext())
             {
                 if(_context.Contact != null)
                 {

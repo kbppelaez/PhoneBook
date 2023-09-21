@@ -1,27 +1,35 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhonebookV2.Core;
+using PhonebookV2.Core.Application;
+using PhonebookV2.Data;
 using PhonebookV2.Models;
 using System.Diagnostics;
+using System.Transactions;
 
 namespace PhonebookV2.Controllers
 {
     public class ContactsController : Controller
     {
+        private readonly IContactsService _contactsService;
         private readonly ILogger<ContactsController> _logger;
         private readonly ContactsTable _contacts = new ContactsTable();
 
-        public ContactsController(ILogger<ContactsController> logger)
+        public ContactsController(IContactsService contacts, ILogger<ContactsController> logger)
         {
+            _contactsService = contacts;
             _logger = logger;
         }
 
         [Route("/")]
         [Route("/contacts")]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery]ContactSearchQuery args)
         {
-            List<ListContactsView> result = await _contacts.ListAll();
-            return View(result);
+            var vm = new ContactsSearchViewModel(_contactsService);
+            await vm.Initialize(args);
+            
+            return View(vm);
         }
 
         [Route("contacts/{id:int}")]
@@ -122,7 +130,7 @@ namespace PhonebookV2.Controllers
 
         [Route("/contacts/search/{term?}")]
         [HttpGet]
-        public async Task<IActionResult> SearchContact(string? term)
+        public async Task<IActionResult> SearchContact(string term)
         {
             if (term == null)
             {
