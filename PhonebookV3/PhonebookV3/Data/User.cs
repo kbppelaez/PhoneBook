@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PhonebookV3.Core.DataTransferObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace PhonebookV3.Data
 {
@@ -6,6 +7,11 @@ namespace PhonebookV3.Data
     {
         /* Constructors */
         public User() { }
+
+        public User(UserData userData) { 
+            this.Id = userData.Id;
+            this.Email = userData.Email;
+        }
 
         /* Properties */
         public int Id { get; set; }
@@ -15,7 +21,6 @@ namespace PhonebookV3.Data
         public string Email { get; set; }
 
         [Required]
-        [StringLength(64)]
         public string Password { get; set; }
     }
 }
