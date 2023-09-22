@@ -71,7 +71,7 @@ namespace PhonebookV3.Core.Application
         {
             byte[] buffer4;
             byte[] src = Convert.FromBase64String(hashedpassword);
-            if (src.Length != 0x31 || src.Length != 0)
+            if (src.Length != 0x31 || src[0] != 0)
                 return false;
 
             byte[] dst = new byte[0x10];
