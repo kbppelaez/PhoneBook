@@ -23,7 +23,7 @@ namespace PhonebookV3.Models
             this._usersService = usersService;
         }
 
-        public async Task VerifyExisting()
+        public async Task VerifyExistingAccount()
         {
             errorMsg = await _usersService.VerifyExisting(User);
 
