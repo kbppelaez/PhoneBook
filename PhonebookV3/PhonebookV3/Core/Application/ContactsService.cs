@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhonebookV3.Core.DataTransferObjects;
 using PhonebookV3.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PhonebookV3.Core.Application
 {
@@ -13,27 +14,24 @@ namespace PhonebookV3.Core.Application
             _db = db;
         }
 
+        public async Task<int> CountAll(ContactSearchQueryData queryData)
+        {
+            IQueryable<Contact> query = _db.Contact;
+
+            if(!string.IsNullOrEmpty(queryData.Term))
+                query = SearchTerm(query, queryData.Term);
+
+            return await query.CountAsync();
+        }
         public async Task<ContactListData[]> GetAll(ContactSearchQueryData queryData)
         {
             IQueryable<Contact> query = _db.Contact;
 
             if (!string.IsNullOrEmpty(queryData.Term))
-            {
-                string term = queryData.Term.Trim().ToLower();
-                query = query.Where(
-                    c => c.FirstName.ToLower().StartsWith(term)
-                        || (c.LastName != null && c.LastName.ToLower().StartsWith(term))
-                        || (c.Email != null && c.Email.ToLower().StartsWith(term))
-                        || (c.PhoneNumber != null && c.PhoneNumber.StartsWith(term))
-                        || (c.Notes != null && c.Notes.ToLower().StartsWith(term))
-                    );
-            }
-
-            /*
-             Handling of PageNumber and PageSize here
-             */
+                query = SearchTerm(query, queryData.Term);
 
             query = query.OrderBy(c => c.FirstName);
+            query = SkipContacts(query, queryData.Page, queryData.PageSize);
 
             return await query
                 .Select(
@@ -110,6 +108,26 @@ namespace PhonebookV3.Core.Application
             }catch (Exception ex) {
                 return ex.Message;
             }
+        }
+
+        // HELPER FUNCTIONS
+        public IQueryable<Contact> SearchTerm(IQueryable<Contact> query, string term)
+        {
+            term = term.Trim().ToLower();
+            query = query.Where(
+                c => c.FirstName.ToLower().StartsWith(term)
+                    || (c.LastName != null && c.LastName.ToLower().StartsWith(term))
+                    || (c.Email != null && c.Email.ToLower().StartsWith(term))
+                    || (c.PhoneNumber != null && c.PhoneNumber.StartsWith(term))
+                    || (c.Notes != null && c.Notes.ToLower().StartsWith(term))
+            );
+            return query;
+        }
+
+        public IQueryable<Contact> SkipContacts(IQueryable<Contact> query, int currentIndex, int pageSize)
+        {
+            return query.Skip(currentIndex * pageSize)
+                         .Take(pageSize);
         }
     }
 }
