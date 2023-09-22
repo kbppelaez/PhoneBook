@@ -23,9 +23,11 @@ builder.Services.AddControllersWithViews();
 // Adding Cookie Authentication Service
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options => {
-         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-         options.SlidingExpiration = true;
-         options.AccessDeniedPath = "/Forbidden/";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/Forbidden/";
+        options.LoginPath = "/users/login";
+        options.LogoutPath = "/users/logout";
     });
 
 var app = builder.Build();
@@ -41,9 +43,16 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCookiePolicy(new CookiePolicyOptions()
+{
+    MinimumSameSitePolicy = SameSiteMode.Strict
+});
+
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
