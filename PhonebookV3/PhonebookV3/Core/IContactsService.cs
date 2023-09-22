@@ -9,5 +9,6 @@ namespace PhonebookV3.Core
         Task<ContactData> Search(int id);
         Task<string> UpdateContact(ContactData contact);
         Task<string> DeleteContact(int id);
+        Task<int> CountAll(ContactSearchQueryData queryData);
     }
 }
