@@ -1,7 +1,5 @@
 ﻿using PhonebookV3.Core.Application;
 using PhonebookV3.Core.DataTransferObjects;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace PhonebookV3.Models
 {
@@ -26,6 +24,7 @@ namespace PhonebookV3.Models
         public async Task Verify()
         {
             errorMsg = await _usersService.Verify(User);
+
             if (errorMsg.Equals("OK"))
                 success = true;
             else
