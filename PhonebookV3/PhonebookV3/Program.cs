@@ -21,12 +21,12 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddControllersWithViews();
 
 // Adding Cookie Authentication Service
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
-//    .AddCookie(options => {
-//         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-//         options.SetSlidingExpiration = true;
-//         options.AccessDeniedPath = "/Forbidden/";
-//    });
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => {
+         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+         options.SlidingExpiration = true;
+         options.AccessDeniedPath = "/Forbidden/";
+    });
 
 var app = builder.Build();
 
