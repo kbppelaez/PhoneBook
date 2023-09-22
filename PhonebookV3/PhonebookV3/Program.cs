@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using PhonebookV3.Core;
 using PhonebookV3.Core.Application;
@@ -17,6 +18,14 @@ builder.Services.AddScoped<PhonebookDbContext>(sp => new PhonebookDbContext());
 builder.Services.AddScoped<IContactsService, ContactsService>();
 
 builder.Services.AddControllersWithViews();
+
+// Adding Cookie Authentication Service
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+//    .AddCookie(options => {
+//         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+//         options.SetSlidingExpiration = true;
+//         options.AccessDeniedPath = "/Forbidden/";
+//    });
 
 var app = builder.Build();
 
