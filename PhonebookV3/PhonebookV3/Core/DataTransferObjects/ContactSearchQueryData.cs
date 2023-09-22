@@ -4,7 +4,7 @@
     {
         public string Term { get; set; }
         public int Page { get; set; }
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 5;
 
         public Dictionary<string,string> ToParam(int change) {
             return new Dictionary<string, string>
