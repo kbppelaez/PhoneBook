@@ -32,6 +32,7 @@ namespace PhonebookV3.Controllers
         // CREATE
         [Route("/contacts/create")]
         [HttpGet]
+        [Authorize]
         public IActionResult NewContact()
         {
             return View(new ContactDetailsViewModel());
@@ -39,6 +40,7 @@ namespace PhonebookV3.Controllers
 
         [Route("/contacts/create")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> SaveChanges([FromForm] ContactDetailsViewModel newcontact)
         {
             newcontact.AddService(_contactsService);
@@ -66,6 +68,7 @@ namespace PhonebookV3.Controllers
         // EDIT
         [Route("contacts/{id:int}/edit")]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> EditContact(int id)
         {
             var vm = new ContactDetailsViewModel(_contactsService);
@@ -81,6 +84,7 @@ namespace PhonebookV3.Controllers
 
         [Route("contacts/{id:int}/edit")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> SaveChanges([FromForm] ContactDetailsViewModel c, int id)
         {
             if (c.Details.Id != id)
@@ -105,6 +109,7 @@ namespace PhonebookV3.Controllers
         // DELETE
         [Route("contacts/{id:int}/delete")]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DeleteContact(int id)
         {
             var vm = new ContactDetailsViewModel(_contactsService);
@@ -120,6 +125,7 @@ namespace PhonebookV3.Controllers
 
         [Route("/contacts/{id:int}/delete")]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteContactConfirmed([FromForm] int id)
         {
             string result = await _contactsService.DeleteContact(id);
