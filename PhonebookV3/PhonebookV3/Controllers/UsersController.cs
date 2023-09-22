@@ -31,7 +31,8 @@ namespace PhonebookV3.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyLogin([FromForm] UserViewModel account)
         {
-            await account.VerifyExisting();
+            account.AddService(_usersServices);
+            await account.VerifyExistingAccount();
             if(account.success)
             {
                 await PersistLogin(account.User);
@@ -40,6 +41,7 @@ namespace PhonebookV3.Controllers
                 return RedirectToAction("Index");
             }
 
+            account.fromLogin = true;
             account.User.Password = string.Empty;
             return View("Login", account);
         }
@@ -56,6 +58,7 @@ namespace PhonebookV3.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyNewAccount([FromForm] UserViewModel account)
         {
+            account.AddService(_usersServices);
             await account.VerifyNewAccount();
             if (account.success)
             {
@@ -66,6 +69,7 @@ namespace PhonebookV3.Controllers
                 return RedirectToAction("Index");
             }
 
+            account.fromRegister = true;
             account.User.Password = string.Empty;
             return View("Register", account);
         }
