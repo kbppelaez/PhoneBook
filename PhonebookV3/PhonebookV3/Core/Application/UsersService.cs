@@ -6,14 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PhonebookV3.Core.Application
 {
-    public class UsersService
+    public class UsersService : IUsersService
     {
         private readonly PhonebookDbContext _db;
         public UsersService(PhonebookDbContext db) {
             _db = db;
         }
 
-        public async Task<string> Verify(UserData account)
+        // CHECK if USER EXISTS
+        public async Task<string> VerifyExisting(UserData account)
         {
             User existingUser = await Find(account.Email);
             if (existingUser == null)
@@ -24,11 +25,28 @@ namespace PhonebookV3.Core.Application
             else return "Incorrect Password.";
         }
 
+        // SEARCH the email
         public async Task<User> Find(string Email)
         {
             IQueryable<User> query = _db.User;
             query = query.Where(c => c.Email.Equals(Email));
             return await query.FirstOrDefaultAsync();
+        }
+
+        // CHECK if USER IS NEW
+        public async Task<bool> VerifyNewAccount(string Email)
+        {
+            User existingUser = await Find(Email);
+            if (existingUser == null) return true;
+            return false;
+        }
+
+        // ADD USER TO DATABASE
+        public async Task RegisterAccount(UserData newUser)
+        {
+            newUser.Password = HashPassword(newUser.Password);
+            _db.Add(new User(newUser));
+            await _db.SaveChangesAsync();
         }
 
         // [DE]HASHING FUNCTIONS for the Password
