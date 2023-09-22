@@ -19,6 +19,7 @@ namespace PhonebookV3.Controllers
             _logger = logger;
         }
 
+        // LOGIN IN ROUTE
         [Route("/users/login")]
         [HttpGet]
         public IActionResult Login()
@@ -30,7 +31,7 @@ namespace PhonebookV3.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyLogin([FromForm] UserViewModel account)
         {
-            await account.Verify();
+            await account.VerifyExisting();
             if(account.success)
             {
                 await PersistLogin(account.User);
@@ -43,6 +44,33 @@ namespace PhonebookV3.Controllers
             return View("Login", account);
         }
 
+        // REGISTER ROUTE
+        [Route("/users/register")]
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View(new UserViewModel());
+        }
+
+        [Route("/users/register")]
+        [HttpPost]
+        public async Task<IActionResult> VerifyNewAccount([FromForm] UserViewModel account)
+        {
+            await account.VerifyNewAccount();
+            if (account.success)
+            {
+                await PersistLogin(account.User);
+                _logger.LogInformation("User {Email} created.", account.User.Email);
+                _logger.LogInformation("User {Email} logged in.", account.User.Email);
+                account.User.Password = string.Empty;
+                return RedirectToAction("Index");
+            }
+
+            account.User.Password = string.Empty;
+            return View("Register", account);
+        }
+
+        // HELPER FUNCTIONS
         public async Task PersistLogin(UserData account)
         {
             var claims = new List<Claim>
@@ -63,6 +91,8 @@ namespace PhonebookV3.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
         }
+
+        
 
 
     }
