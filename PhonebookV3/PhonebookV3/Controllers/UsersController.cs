@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using PhonebookV3.Core.DataTransferObjects;
 using System.Security.Claims;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace PhonebookV3.Controllers
 {
@@ -29,18 +31,20 @@ namespace PhonebookV3.Controllers
 
         [Route("/users/login")]
         [HttpPost]
-        public async Task<IActionResult> VerifyLogin([FromForm] UserViewModel account)
+        public async Task<IActionResult> VerifyLogin([FromForm] UserViewModel account, [FromQuery] string returnUrl = null)
         {
             account.AddService(_usersServices);
             await account.VerifyExistingAccount();
-            if(account.success)
+            if (account.success)
             {
                 await PersistLogin(account.User);
                 _logger.LogInformation("User {Email} logged in.", account.User.Email);
                 account.User.Password = string.Empty;
-                return RedirectToAction("Index");
+                if (returnUrl == null)
+                    return Redirect("/contacts");
+                else
+                    return LocalRedirect(returnUrl);
             }
-
             account.fromLogin = true;
             account.User.Password = string.Empty;
             return View("Login", account);
@@ -66,12 +70,23 @@ namespace PhonebookV3.Controllers
                 _logger.LogInformation("User {Email} created.", account.User.Email);
                 _logger.LogInformation("User {Email} logged in.", account.User.Email);
                 account.User.Password = string.Empty;
-                return RedirectToAction("Index");
+                return Redirect("/contacts");
             }
 
             account.fromRegister = true;
             account.User.Password = string.Empty;
             return View("Register", account);
+        }
+
+        // LOGOUT
+        [Route("users/logout")]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return Redirect("/contacts");
         }
 
         // HELPER FUNCTIONS
@@ -94,6 +109,8 @@ namespace PhonebookV3.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
+
+           
         }
 
         
