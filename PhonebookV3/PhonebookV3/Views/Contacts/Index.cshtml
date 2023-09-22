@@ -50,25 +50,31 @@
             <nav aria-label="pagination">
                 <ul class="pagination">
                     <!-- Check if 1st page -->
-                    @if (Model.args.Page == 0)
-                    {
-                        <li class="page-item disabled">
-                            <span class="page-link">Back</span>
-                        </li>
-                    }
-                    else
+                    @if (Model.HasPreviousPage)
                     {
                         <li class="page-item">
                             <a asp-route="index" asp-all-route-data="backparams" class="page-link">Back</a>
                         </li>
                     }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Back</span>
+                        </li>
+                    }
                     <li class="page-item"><a class="page-link" href="#">@currpage</a></li>
-                    <li class="page-item">
-                        <!--
-                            Check if last page to disable Next Button
-                        -->
-                        <a asp-route="index" asp-all-route-data="nextparams" class="page-link">Next</a>
-                    </li>
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a asp-route="index" asp-all-route-data="nextparams" class="page-link">Next</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    }
                 </ul>
             </nav>
         </div>
