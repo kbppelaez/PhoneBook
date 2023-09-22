@@ -16,6 +16,7 @@ builder.Services.AddDbContext<PhonebookDbContext>(options =>
 // Dependency Injection for the PhonebookDbContext
 builder.Services.AddScoped<PhonebookDbContext>(sp => new PhonebookDbContext());
 builder.Services.AddScoped<IContactsService, ContactsService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 
 builder.Services.AddControllersWithViews();
 
