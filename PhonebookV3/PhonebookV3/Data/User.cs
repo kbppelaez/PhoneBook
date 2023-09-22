@@ -11,6 +11,7 @@ namespace PhonebookV3.Data
         public User(UserData userData) { 
             this.Id = userData.Id;
             this.Email = userData.Email;
+            this.Password = userData.Password;
         }
 
         /* Properties */
