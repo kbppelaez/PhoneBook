@@ -16,31 +16,46 @@ namespace PhonebookV3.Core.Application
 
         public async Task<int> CountAll(ContactSearchQueryData queryData)
         {
-            IQueryable<Contact> query = _db.Contact;
+            try
+            {
+                IQueryable<Contact> query = _db.Contact;
 
-            if(!string.IsNullOrEmpty(queryData.Term))
-                query = SearchTerm(query, queryData.Term);
+                if (!string.IsNullOrEmpty(queryData.Term))
+                    query = SearchTerm(query, queryData.Term);
 
-            return await query.CountAsync();
+                return await query.CountAsync();
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
         public async Task<ContactListData[]> GetAll(ContactSearchQueryData queryData)
         {
-            IQueryable<Contact> query = _db.Contact;
+            try
+            {
+                IQueryable<Contact> query = _db.Contact;
 
-            if (!string.IsNullOrEmpty(queryData.Term))
-                query = SearchTerm(query, queryData.Term);
+                if (!string.IsNullOrEmpty(queryData.Term))
+                    query = SearchTerm(query, queryData.Term);
 
-            query = query.OrderBy(c => c.FirstName);
-            query = SkipContacts(query, queryData.Page, queryData.PageSize);
+                query = query.OrderBy(c => c.FirstName);
+                query = SkipContacts(query, queryData.Page, queryData.PageSize);
 
-            return await query
-                .Select(
-                    c => new ContactListData { 
-                        Id = c.Id,
-                        FirstName = c.FirstName,
-                        LastName = c.LastName
-                    })
-                .ToArrayAsync();
+                return await query
+                    .Select(
+                        c => new ContactListData
+                        {
+                            Id = c.Id,
+                            FirstName = c.FirstName,
+                            LastName = c.LastName
+                        })
+                    .ToArrayAsync();
+            }
+            catch (Exception)
+            {
+                return Array.Empty<ContactListData>();
+            }
         }
 
         public async Task<string> InsertContact(ContactData newcontact)
